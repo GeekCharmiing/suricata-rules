@@ -379,10 +379,10 @@ alert http $EXTERNAL_NET any -> $HOME_NET any (msg: "[QUADRANT] JSP Webshell Upl
 
 alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"[QUADRANT] JSP Webshell Command after Exploitation Detected"; flow: established,to_server; http.method; content:"GET"; http.uri; content:".jsp?cmd="; fast_pattern; reference:url,https://github.com/TAM-K592/CVE-2024-53677-S2-067/blob/ALOK/S2-067.py; xbits: isset,jsp_upload,track ip_src, expire 259200; classtype:web-application-attack; priority: 1; sid:81000126; rev:1; metadata:attack_target Web_Server, created_at 2024_12_18, confidence High, signature_severity Major, type RCE;)
 
-alert tls $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] deepseek[.]com TLS SNI Detected"; flow:established,to_server; tls.sni; content:"deepseek.com"; nocase; classtype:suspicious-traffic; sid:81000127; rev:1; metadata:mitre_technique_id T1071.004;)
+alert tls $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] deepseek[.]com TLS SNI Detected"; flow:established,to_server; tls.sni; content:"deepseek.com"; nocase; threshold: type limit, track by_src, count 1, seconds 3600; classtype:suspicious-traffic; priority:1; sid:81000127; rev:1; metadata:mitre_technique_id T1071.004;)
 
-alert dns $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] deepseek[.]com DNS Request Detected";  dns.query; content:"deepseek.com"; nocase; classtype:suspicious-traffic; sid:81000127; rev:1; metadata:mitre_technique_id T1071.004;)
+alert dns $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] deepseek[.]com DNS Request Detected";  dns.query; content:"deepseek.com"; nocase; threshold: type limit, track by_src, count 1, seconds 3600; classtype:suspicious-traffic; priority:1; sid:81000128; rev:1; metadata:mitre_technique_id T1071.004;)
 
-alert tls $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] openclaw[.]ai TLS SNI Detected"; flow:established,to_server; tls.sni; content:"openclaw.ai"; nocase; classtype:trojan-activity; sid:81000128; rev:1; metadata:mitre_technique_id T1071.004;)
+alert tls $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] openclaw[.]ai TLS SNI Detected"; flow:established,to_server; tls.sni; content:"openclaw.ai"; nocase; threshold: type limit, track by_src, count 1, seconds 3600; classtype:suspicious-traffic; priority:1;; sid:81000129; rev:1; metadata:mitre_technique_id T1071.004;)
 
-alert dns $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] openclaw[.]ai DNS Request Detected";  dns.query; content:"openclaw.ai"; nocase; classtype:trojan-activity; sid:81000129; rev:1; metadata:mitre_technique_id T1071.004;)
+alert dns $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] openclaw[.]ai DNS Request Detected";  dns.query; content:"openclaw.ai"; nocase; threshold: type limit, track by_src, count 1, seconds 3600; classtype:suspicious-traffic; priority:1; sid:81000130; rev:1; metadata:mitre_technique_id T1071.004;)
